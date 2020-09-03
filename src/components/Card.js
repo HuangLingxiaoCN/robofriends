@@ -3,7 +3,7 @@ import React from 'react';
 const Card = ({name, email, id}) => {
   // ES6 destructuring
   return (
-    /* This is actually JSX not html*/
+    /* className='' is actually JSX syntax. We use tachyons css library here.*/
     <div className='tc bg-light-green dib br3 pa3 ma2 grow bw2 shadow-5'>
       <img alt='photo' src={`https://robohash.org/${name}?size=200x200`}/>
       <div>
