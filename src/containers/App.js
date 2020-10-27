@@ -1,31 +1,43 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import CardList from '../components/CardList';
 import SearchBox from '../components/SearchBox';
 import Scroll from '../components/Scroll';
 
 
-class App extends Component {
-  constructor() {
+function App() {
+  /* constructor() {
     super(); // children class constructor should call parent class
     this.state = {  // constructor
       robots: [],
       searchfield: ''
     }
-  }
+  } */
+  const [robots, setRobots] = useState([]);
+  const [searchfield, setSearchfield] = useState('');
 
-  componentDidMount() {
+  /* componentDidMount() {
     fetch('https://jsonplaceholder.typicode.com/users')
       .then(response => response.json())
       .then(users => this.setState({ robots: users}));
-  }
+  } */
 
-  onSearchChange = (event) => {
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => response.json())
+      .then(users => setRobots(users));
+  },[]) // Only run if [] changes( which will NEVER change). 
+        // [] empty array will prevent the useEffect() from running
+        // repeatedly in an infinite loop.
+
+  /* onSearchChange = (event) => {
     this.setState({ searchfield: event.target.value });
+  } */
+  const onSearchChange = (event) => {
+    setSearchfield(event.target.value);
   }
 
-  render() {
     // Destructuring
-    const { robots, searchfield } = this.state;
+    /* const { robots, searchfield } = this.state; */
     const filteredRobots = robots.filter(robot => {
       //
       return robot.name.toLowerCase().includes(searchfield.toLowerCase());
@@ -38,14 +50,13 @@ class App extends Component {
       return (
         <div className='tc'>
           <h1 className='f2'>RoboFriends</h1>
-          <SearchBox searchChange = {this.onSearchChange}/>
+          <SearchBox searchChange = {onSearchChange}/>
           <Scroll>
             <CardList robots={filteredRobots}/>
           </Scroll>
         </div>
       );
     }
-  }
 }
 
 export default App;
